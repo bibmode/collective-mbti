@@ -1,4 +1,5 @@
 import { Icon } from "@iconify/react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const questions = [
@@ -87,9 +88,11 @@ const SelfQuiz = () => {
     <div>
       {/* header */}
       <div className="relative flex justify-between container sm:border-x sm:border-gray-500 pt-8 md:pt-16 pb-8 uppercase">
-        <h1 className="text-orange-500 font-black text-2xl max-w-[100px] leading-7">
-          collective mbti
-        </h1>
+        <Link href="/">
+          <a className="text-orange-500 font-black text-2xl max-w-[100px] leading-7 cursor-pointer">
+            collective mbti
+          </a>
+        </Link>
 
         <div className="absolute w-[18px] h-[18px] bg-gray-900 bottom-9 mb-0.5 left-20" />
 

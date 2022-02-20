@@ -1,4 +1,5 @@
 import { Icon } from "@iconify/react";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -77,12 +78,17 @@ export default function Home() {
           <div className="max-w-3xl ">
             {/* test buttons */}
             <div className="flex flex-col -mx-8 sm:mx-0 sm:flex-row">
-              <button className="px-8 py-8 text-left bg-orange-500 hover:bg-orange-600 text-white transition ease-in duration-200">
-                <h2 className="text-3xl max-w-xs pr-4">
-                  TAKE THE TEST YOURSELF
-                </h2>
-                <p>Think you can type yourself objectively?</p>
-              </button>
+              {/* self test button */}
+              <Link href="/personality-test/self-test">
+                <a className="px-8 py-8 text-left bg-orange-500 hover:bg-orange-600 text-white transition ease-in duration-200 cursor-pointer">
+                  <h2 className="text-3xl max-w-xs pr-4">
+                    TAKE THE TEST YOURSELF
+                  </h2>
+                  <p>Think you can type yourself objectively?</p>
+                </a>
+              </Link>
+
+              {/* friends test button */}
               <button className="border-b sm:border-b-0 border-r border-gray-500 px-8 py-8 text-left hover:bg-orange-200 hover:border-white transition ease-in duration-200">
                 <h2 className="text-3xl max-w-xs pr-4">
                   GET FRIENDS TO TYPE YOU
