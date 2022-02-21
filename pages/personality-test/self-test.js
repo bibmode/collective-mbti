@@ -1,6 +1,8 @@
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import ProgressBar from "../../components/ProgressBar";
+import { connectToDatabase } from "../../util/mongodb";
 
 const SelfQuiz = ({ questions }) => {
   const initialArray = new Array(questions.length).fill(0);
@@ -16,8 +18,8 @@ const SelfQuiz = ({ questions }) => {
     setChoiceMade(newValues);
   };
 
-  const handleDoneQuiz = (progress) => {
-    progress === 100 && console.log(choiceMade);
+  const handleDoneQuiz = () => {
+    localStorage.setItem("self-quiz", choiceMade);
   };
 
   // for progress bar
@@ -98,20 +100,21 @@ const SelfQuiz = ({ questions }) => {
           ))}
         </div>
 
-        {/* navigation buttons */}
-
+        {/* submit */}
         <div className="py-12 container flex justify-center sm:border-x border-gray-500">
-          <button
-            className={`uppercase ${
-              progress === 100
-                ? "bg-orange-500 cursor-pointer hover:bg-orange-600"
-                : "bg-gray-300 cursor-default"
-            } text-white text-xl py-2 px-6 transition ease-in duration-200`}
-            onClick={handleDoneQuiz}
-            disabled={progress !== 100 ? true : false}
-          >
-            finish
-          </button>
+          <Link href="/personality-test/test-result">
+            <button
+              className={`uppercase ${
+                progress === 100
+                  ? "bg-orange-500 cursor-pointer hover:bg-orange-600"
+                  : "bg-gray-300 cursor-default"
+              } text-white text-xl py-2 px-6 transition ease-in duration-200`}
+              onClick={handleDoneQuiz}
+              disabled={progress !== 100 ? true : false}
+            >
+              finish
+            </button>
+          </Link>
         </div>
       </div>
 
@@ -123,17 +126,14 @@ const SelfQuiz = ({ questions }) => {
 
 export default SelfQuiz;
 
-export async function getServerSideProps() {
-  const res = await fetch(`${process.env.PAGE_URL}/api/questions`, {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ testType: "self-test" }),
-  });
+export async function getStaticProps() {
+  const { db } = await connectToDatabase();
 
-  const questions = await res.json();
+  const questions = await db
+    .collection("self-test")
+    .aggregate([{ $sample: { size: 32 } }])
+    .limit(33)
+    .toArray();
 
   return {
     props: {
