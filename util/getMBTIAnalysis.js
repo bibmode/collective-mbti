@@ -1,4 +1,5 @@
 const _ = require("lodash");
+import { typeDescriptions } from "../data/type-descriptions";
 
 let letterValues, extrovertedFunctions, introvertedFunctions;
 let mbtiType,
@@ -59,14 +60,10 @@ const sortCognitiveFunctions = () => {
 
 //handleDuplicates
 const handleDuplicates = (duplicateArr) => {
-  console.log(duplicateArr);
-  let finalVal;
-
-  if (duplicateArr[0].charAt(0) === "F" || duplicateArr[0].charAt(0) === "T") {
-    finalVal = letterValues?.F > letterValues?.T ? "F" : "T";
-  } else {
-    finalVal = letterValues?.N > letterValues?.S ? "N" : "S";
-  }
+  const finalVal =
+    letterValues[duplicateArr[0][0]] > letterValues[duplicateArr[1][0]]
+      ? `${duplicateArr[0][0]}`
+      : `${duplicateArr[1][0]}`;
 
   return finalVal;
 };
@@ -79,7 +76,6 @@ const getHighestValueFunction = (functions) => {
     (key, index) => functions[key] === maxValue
   );
 
-  // console.log(letterValues);
   if (maxFunctionArr.length > 1) {
     const finalFunc = handleDuplicates(maxFunctionArr);
     return finalFunc;
@@ -87,6 +83,45 @@ const getHighestValueFunction = (functions) => {
 
   return maxFunctionArr[0].charAt(0);
   // if (maxFunction) return maxFunction;
+};
+
+// if extroversion === introversion
+const compareInferiorFunctions = (functions) => {
+  let inferiorFunctions = [];
+
+  const functionPair = {
+    Ne: "Si",
+    Si: "Ne",
+    Ni: "Se",
+    Se: "Ni",
+    Te: "Fi",
+    Fi: "Te",
+    Ti: "Fe",
+    Fe: "Ti",
+  };
+
+  const maxValue = [...functions.map((item) => item[1])][0];
+  // const maxValue = Math.max(...Object.values(functions));
+
+  const maxFunctionArr = functions
+    .filter((item, index) => item[1] === maxValue)
+    .map((item) => item[0]);
+
+  if (maxFunctionArr.length > 1) {
+    maxFunctionArr.map((domFuncs, index) => {
+      inferiorFunctions[index] = _.flatten(
+        functions.filter((item) => {
+          return item[0] === `${functionPair[maxFunctionArr[index]]}`;
+        })
+      );
+    });
+
+    return inferiorFunctions[0][1] < inferiorFunctions[1][1]
+      ? maxFunctionArr[0]
+      : maxFunctionArr[1];
+  }
+
+  return maxFunctionArr[0];
 };
 
 const mbtiCalculator = () => {
@@ -112,7 +147,7 @@ const mbtiCalculator = () => {
 
       mbtiType = `E${auxFunc2}${domFunc}J`;
     }
-  } else {
+  } else if (letterValues.E < letterValues.I) {
     // get dominant function
     const domFunc = getHighestValueFunction(introvertedFunctions);
 
@@ -134,26 +169,66 @@ const mbtiCalculator = () => {
 
       mbtiType = `I${domFunc}${auxFunc2}J`;
     }
+  } else {
+    // get dominant function
+    const domFunc = compareInferiorFunctions(cognitiveFunctions);
+
+    // get auxiliary function
+    if (domFunc === "Ti" || domFunc === "Fi") {
+      const auxFunc1 = getHighestValueFunction({
+        Ne: extrovertedFunctions.Ne,
+        Se: extrovertedFunctions.Se,
+      });
+
+      mbtiType = `I${auxFunc1}${domFunc[0]}P`;
+    }
+
+    if (domFunc === "Ni" || domFunc === "Si") {
+      const auxFunc2 = getHighestValueFunction({
+        Te: extrovertedFunctions.Te,
+        Fe: extrovertedFunctions.Fe,
+      });
+
+      mbtiType = `I${domFunc[0]}${auxFunc2}J`;
+    }
+
+    if (domFunc === "Te" || domFunc === "Fe") {
+      const auxFunc3 = getHighestValueFunction({
+        Ni: introvertedFunctions.Ni,
+        Si: introvertedFunctions.Si,
+      });
+
+      mbtiType = `E${auxFunc3}${domFunc[0]}J`;
+    }
+
+    if (domFunc === "Se" || domFunc === "Ne") {
+      const auxFunc2 = getHighestValueFunction({
+        Ti: introvertedFunctions.Ti,
+        Fi: introvertedFunctions.Fi,
+      });
+
+      mbtiType = `E${domFunc[0]}${auxFunc2}P`;
+    }
   }
 };
 
 const getMBTIAnalysis = (answers) => {
   extractValues(answers);
-  mbtiCalculator();
   sortCognitiveFunctions();
-  console.log(letterValues);
+  mbtiCalculator();
 
   const results = {
     mbtiType,
+    description: typeDescriptions.data[mbtiType],
     fourLetters: {
       E: Math.round((letterValues.E / 64) * 100),
-      I: Math.round((letterValues.I / 64) * 100),
+      I: Math.abs(100 - Math.round((letterValues.E / 64) * 100)),
       N: Math.round((letterValues.N / 32) * 100),
-      S: Math.round((letterValues.S / 32) * 100),
+      S: Math.abs(100 - Math.round((letterValues.N / 32) * 100)),
       F: Math.round((letterValues.F / 32) * 100),
-      T: Math.round((letterValues.T / 32) * 100),
+      T: Math.abs(100 - Math.round((letterValues.F / 32) * 100)),
       P: Math.round((letterValues.P / 64) * 100),
-      J: Math.round((letterValues.J / 64) * 100),
+      J: Math.round(100 - Math.round((letterValues.P / 64) * 100)),
     },
     cognitiveFunctions,
   };

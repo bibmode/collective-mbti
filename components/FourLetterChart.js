@@ -1,10 +1,6 @@
 import { useEffect } from "react";
 
 const FourLetterChart = ({ values }) => {
-  useEffect(() => {
-    console.log(values);
-  }, []);
-
   return (
     <>
       {values.map((value, index) => (

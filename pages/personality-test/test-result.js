@@ -8,6 +8,7 @@ const TestResult = () => {
   const [fourLetters, setFourLetters] = useState(null);
   const [cognitiveFunctions, setCognitiveFunctions] = useState(null);
   const [mbtiType, setMbtiType] = useState(null);
+  const [description, setDescription] = useState(null);
 
   useEffect(() => {
     const answers = localStorage.getItem("self-quiz").split(",");
@@ -16,6 +17,7 @@ const TestResult = () => {
     setFourLetters(calculatedData.fourLetters);
     setCognitiveFunctions(calculatedData.cognitiveFunctions);
     setMbtiType(calculatedData.mbtiType);
+    setDescription(calculatedData.description);
 
     console.log(calculatedData);
   }, []);
@@ -31,33 +33,50 @@ const TestResult = () => {
             <span className="text-orange-500">{mbtiType}</span>
           </h1>
           {/* description */}
-          <div className="py-3 px-4 lg:max-w-[350px] lg:h-fit border-y border-gray-800 text-left">
-            {mbtiType && (
-              <p className="hidden lg:block border-b border-gray-800 -mx-4 -mt-2 px-4 font-semibold ">
-                Result: {mbtiType}
+          {description && (
+            <div className="py-3 px-4 lg:max-w-[350px] lg:h-fit border-y border-gray-800 text-left">
+              {mbtiType && (
+                <p className="hidden lg:block border-b border-gray-800 -mx-4 -mt-2 px-4 font-semibold ">
+                  Result: {mbtiType}
+                </p>
+              )}
+              <p className="text-gray-500">
+                Extraverted • iNtuitive • Thinking • Perceiving
               </p>
-            )}
-            <p className="text-gray-500">
-              Extraverted • iNtuitive • Thinking • Perceiving
-            </p>
-            <p className="py-7">
-              ENTPs are frequently described as clever, cerebrally and verbally
-              quick, enthusiastic, outgoing, innovative, flexible, and
-              resourceful. -{" "}
-              <a
-                className="text-orange-500"
-                href="#"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                source
-              </a>
-            </p>
-            <ul className=" container text-orange-500 underline list-disc inline-block px-5">
-              <li>psychologyjunkie.com</li>
-              <li>16Personalities.com</li>
-            </ul>
-          </div>
+              <p className="py-7">
+                {description.description}
+                <a
+                  className="text-orange-500"
+                  href={description.source}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {" "}
+                  - source
+                </a>
+              </p>
+              <ul className=" container text-orange-500 underline list-disc inline-block px-5">
+                <li>
+                  <a
+                    href="https://personalityjunkie.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    personalityjunkie.com
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.truity.com/myers-briggs/about-myers-briggs-personality-typing"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    truity.com
+                  </a>
+                </li>
+              </ul>
+            </div>
+          )}
           {/* charts */}
           <div className="lg:flex-1 lg:max-w-xl lg:flex lg:flex-col lg:items-center">
             {mbtiType && (
