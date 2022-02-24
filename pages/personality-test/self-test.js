@@ -2,22 +2,40 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import ProgressBar from "../../components/ProgressBar";
-import { connectToDatabase } from "../../util/mongodb";
+import { selfQuestions } from "../../data/self-questions";
+import _ from "lodash";
+import Quiz from "../../components/Quiz";
 
 const SelfQuiz = ({ questions }) => {
-  const initialArray = new Array(questions.length).fill(0);
+  const initialArray = new Array(64).fill(0);
 
   const [choiceMade, setChoiceMade] = useState(initialArray);
   const [progress, setProgress] = useState(0);
+  const [page, setPage] = useState(0);
 
   const handleChange = (index, cognitiveFunction) => {
+    const currentIndex = 8 * page;
     const newValues = [...choiceMade].map((choice, i) => {
-      if (i === index) return cognitiveFunction;
+      if (i === index + currentIndex) return cognitiveFunction;
       else return choice;
     });
     setChoiceMade(newValues);
   };
 
+  // page navigations
+  const goToPrevPage = () => {
+    setPage(page - 1);
+  };
+  const goToNextPage = () => {
+    setPage(page + 1);
+  };
+
+  // check if page is completed with answers
+  const handleDonePage = () => {
+    setPage(page + 1);
+  };
+
+  // save answers to local storage
   const handleDoneQuiz = () => {
     localStorage.setItem("self-quiz", choiceMade);
   };
@@ -29,7 +47,11 @@ const SelfQuiz = ({ questions }) => {
     );
     setProgress(done);
     console.log(choiceMade);
-  }, [choiceMade]);
+  }, [choiceMade, progress]);
+
+  useEffect(() => {
+    console.log(questions);
+  }, []);
 
   return (
     <div>
@@ -37,7 +59,7 @@ const SelfQuiz = ({ questions }) => {
       <Header link="/" />
 
       {/* main content */}
-      <div className="border-y border-gray-500 flex items-center flex-col overflow-x-hidden pb-16">
+      <div className="border-y border-gray-500 flex items-center flex-col overflow-x-hidden pb-8">
         {/* main header */}
         <div className="relative container sm:border-x sm:border-gray-500 text-center">
           {/* theme buttons */}
@@ -54,67 +76,143 @@ const SelfQuiz = ({ questions }) => {
         {/* quiz */}
         <div className="w-full container border-t md:border-t-0 border-gray-500 sm:border-x sm:border-gray-500 text-center">
           {/* items */}
-          {questions?.map((item, index) => (
-            <div
-              key={index}
-              className="-mx-4 px-4 py-6 md:py-10 flex flex-col md:flex-row items-center border-b md:border-0 border-gray-500"
-            >
-              <label className="text-sm md:w-6/12 md:pr-8 md:text-2xl hover:cursor-pointer">
-                <input
-                  type="radio"
-                  name={`item-${index}`}
-                  value={item.data[0].function}
-                  className="peer hidden"
-                  onChange={() => {
-                    handleChange(index, item.data[0].function);
-                  }}
-                />
-                <span className="peer-checked:text-orange-600">
-                  {item.data[0].statement}
-                </span>
-              </label>
-
-              <div
-                className={`my-3 md:my-0 border border-gray-900 w-11 md:w-16 h-11 md:h-16 md:text-xl uppercase flex items-center justify-center rounded-full ${
-                  choiceMade[index] && "bg-orange-500 text-white border-0"
-                }`}
-              >
-                <p>or</p>
-              </div>
-
-              <label className="text-sm md:w-6/12 md:pl-8 md:text-2xl hover:cursor-pointer">
-                <input
-                  type="radio"
-                  name={`item-${index}`}
-                  value={item.data[1].function}
-                  className="peer hidden"
-                  onChange={() => {
-                    handleChange(index, item.data[1].function);
-                  }}
-                />
-                <span className="peer-checked:text-orange-600">
-                  {item.data[1].statement}
-                </span>
-              </label>
-            </div>
-          ))}
+          {page === 0 && (
+            <Quiz
+              questions={questions[page]}
+              page={page}
+              handleChange={handleChange}
+              choiceMade={choiceMade}
+            />
+          )}
+          {page === 1 && (
+            <Quiz
+              questions={questions[page]}
+              page={page}
+              handleChange={handleChange}
+              choiceMade={choiceMade}
+            />
+          )}
+          {page === 2 && (
+            <Quiz
+              questions={questions[page]}
+              page={page}
+              handleChange={handleChange}
+              choiceMade={choiceMade}
+            />
+          )}
+          {page === 3 && (
+            <Quiz
+              questions={questions[page]}
+              page={page}
+              handleChange={handleChange}
+              choiceMade={choiceMade}
+            />
+          )}
+          {page === 4 && (
+            <Quiz
+              questions={questions[page]}
+              page={page}
+              handleChange={handleChange}
+              choiceMade={choiceMade}
+            />
+          )}
+          {page === 5 && (
+            <Quiz
+              questions={questions[page]}
+              page={page}
+              handleChange={handleChange}
+              choiceMade={choiceMade}
+            />
+          )}
+          {page === 6 && (
+            <Quiz
+              questions={questions[page]}
+              page={page}
+              handleChange={handleChange}
+              choiceMade={choiceMade}
+            />
+          )}
+          {page === 7 && (
+            <Quiz
+              questions={questions[page]}
+              page={page}
+              handleChange={handleChange}
+              choiceMade={choiceMade}
+            />
+          )}
         </div>
+
+        {/* {checkPageProgress() && <h1>hello</h1>} */}
 
         {/* submit */}
         <div className="py-12 container flex justify-center sm:border-x border-gray-500">
-          <Link href="/personality-test/test-result">
+          {page === 0 && (
             <button
               className={`uppercase ${
-                progress === 100
+                progress === 13
                   ? "bg-orange-500 cursor-pointer hover:bg-orange-600"
                   : "bg-gray-300 cursor-default"
               } text-white text-xl py-2 px-6 transition ease-in duration-200`}
-              onClick={handleDoneQuiz}
-              disabled={progress !== 100 ? true : false}
+              disabled={progress !== 13 ? true : false}
+              onClick={goToNextPage}
             >
-              finish
+              next
             </button>
-          </Link>
+          )}
+
+          {page > 0 && page < 7 && (
+            <>
+              <button
+                className="uppercase bg-orange-500 cursor-pointer hover:bg-orange-600 text-white text-xl py-2 px-6 transition ease-in duration-20"
+                onClick={goToPrevPage}
+              >
+                back
+              </button>
+              <button
+                className={`uppercase ${
+                  progress === Math.round(((8 * (page + 1)) / 64) * 100)
+                    ? "bg-orange-500 cursor-pointer hover:bg-orange-600"
+                    : "bg-gray-300 cursor-default"
+                } text-white text-xl py-2 px-6 transition ease-in duration-200`}
+                disabled={
+                  progress !== Math.round(((8 * (page + 1)) / 64) * 100)
+                    ? true
+                    : false
+                }
+                onClick={goToNextPage}
+              >
+                next
+              </button>
+            </>
+          )}
+          {page === 7 && (
+            <>
+              <button
+                className={`uppercase ${
+                  progress === 100
+                    ? "bg-orange-500 cursor-pointer hover:bg-orange-600"
+                    : "bg-gray-300 cursor-default"
+                } text-white text-xl py-2 px-6 transition ease-in duration-200`}
+                onClick={goToPrevPage}
+                disabled={progress !== 100 ? true : false}
+              >
+                back
+              </button>
+              <Link href="/personality-test/test-result" passHref>
+                <button
+                  className={`uppercase ${
+                    progress === 100
+                      ? "bg-orange-500 cursor-pointer hover:bg-orange-600"
+                      : "bg-gray-300 cursor-default"
+                  } text-white text-xl py-2 px-6 transition ease-in duration-200`}
+                  onClick={handleDoneQuiz}
+                  disabled={progress !== 100 ? true : false}
+                >
+                  finish
+                </button>
+              </Link>
+            </>
+          )}
         </div>
       </div>
 
@@ -127,17 +225,12 @@ const SelfQuiz = ({ questions }) => {
 export default SelfQuiz;
 
 export async function getStaticProps() {
-  const { db } = await connectToDatabase();
-
-  const questions = await db
-    .collection("self-test")
-    .aggregate([{ $sample: { size: 32 } }])
-    .limit(33)
-    .toArray();
+  const data = selfQuestions.data;
+  let questions = _.chunk(_.shuffle(data), 8);
 
   return {
     props: {
-      questions: JSON.parse(JSON.stringify(questions)),
+      questions,
     },
   };
 }

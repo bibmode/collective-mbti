@@ -1,162 +1,118 @@
 import { useEffect, useState } from "react";
+import CognitiveFunctionChart from "../../components/CognitiveFuncChart";
+import FourLetterChart from "../../components/fourLetterChart";
 import Header from "../../components/Header";
+import getMBTIAnalysis from "../../util/getMBTIAnalysis";
 
 const TestResult = () => {
-  const [letterValues, setLetterValues] = useState(null);
-  const [extrovertedFunctions, setExtrovertedFunctions] = useState(null);
-  const [introvertedFunctions, setIntrovertedFunctions] = useState(null);
-
+  const [fourLetters, setFourLetters] = useState(null);
+  const [cognitiveFunctions, setCognitiveFunctions] = useState(null);
   const [mbtiType, setMbtiType] = useState(null);
 
   useEffect(() => {
     const answers = localStorage.getItem("self-quiz").split(",");
 
-    const letterValues = {
-      E: answers.filter((answer) => answer.includes("e")).length,
-      I: answers.filter((answer) => answer.includes("i")).length,
-      N: answers.filter((answer) => answer.includes("N")).length,
-      S: answers.filter((answer) => answer.includes("S")).length,
-      T: answers.filter((answer) => answer.includes("T")).length,
-      F: answers.filter((answer) => answer.includes("F")).length,
-      J: answers.filter(
-        (answer) =>
-          answer === "Si" ||
-          answer === "Ni" ||
-          answer === "Te" ||
-          answer === "Fe"
-      ).length,
-      P: answers.filter(
-        (answer) =>
-          answer === "Se" ||
-          answer === "Ne" ||
-          answer === "Ti" ||
-          answer === "Fi"
-      ).length,
-    };
+    const calculatedData = getMBTIAnalysis(answers);
+    setFourLetters(calculatedData.fourLetters);
+    setCognitiveFunctions(calculatedData.cognitiveFunctions);
+    setMbtiType(calculatedData.mbtiType);
 
-    const extrovertedFunctions = {
-      Ne: answers.filter((answer) => answer === "Ne").length,
-      Te: answers.filter((answer) => answer === "Te").length,
-      Se: answers.filter((answer) => answer === "Se").length,
-      Fe: answers.filter((answer) => answer === "Fe").length,
-    };
-
-    const introvertedFunctions = {
-      Ti: answers.filter((answer) => answer === "Ti").length,
-      Si: answers.filter((answer) => answer === "Si").length,
-      Fi: answers.filter((answer) => answer === "Fi").length,
-      Ni: answers.filter((answer) => answer === "Ni").length,
-    };
-
-    console.log(letterValues, extrovertedFunctions, introvertedFunctions);
-
-    setLetterValues(letterValues);
-    setExtrovertedFunctions(extrovertedFunctions);
-    setIntrovertedFunctions(introvertedFunctions);
-
-    // start computation
-    getMBTIType(letterValues, extrovertedFunctions, introvertedFunctions);
+    console.log(calculatedData);
   }, []);
-
-  //handleDuplicates
-  const handleDuplicates = (duplicateArr) => {
-    console.log(duplicateArr);
-    let finalVal;
-
-    if (
-      duplicateArr[0].charAt(0) === "F" ||
-      duplicateArr[0].charAt(0) === "T"
-    ) {
-      finalVal = letterValues?.F > letterValues?.T ? "F" : "T";
-    } else {
-      finalVal = letterValues?.N > letterValues?.S ? "N" : "S";
-    }
-
-    return finalVal;
-  };
-
-  // getting highest value
-  const getHighestValueFunction = (functions) => {
-    const maxValue = Math.max(...Object.values(functions));
-
-    const maxFunctionArr = [...Object.keys(functions)].filter(
-      (key, index) => functions[key] === maxValue
-    );
-
-    // console.log(letterValues);
-    if (maxFunctionArr.length > 1) {
-      const finalFunc = handleDuplicates(maxFunctionArr);
-      return finalFunc;
-    }
-
-    return maxFunctionArr[0].charAt(0);
-    // if (maxFunction) return maxFunction;
-  };
-
-  // computation function
-  const getMBTIType = (
-    letterValues,
-    extrovertedFunctions,
-    introvertedFunctions
-  ) => {
-    if (letterValues.E > letterValues.I) {
-      // get dominant function
-      const domFunc = getHighestValueFunction(extrovertedFunctions);
-
-      // get auxiliary function
-      if (letterValues.P > letterValues.J) {
-        const auxFunc1 = getHighestValueFunction({
-          Fi: introvertedFunctions.Fi,
-          Ti: introvertedFunctions.Ti,
-        });
-
-        setMbtiType(`E${domFunc}${auxFunc1}P`);
-      }
-
-      if (letterValues.P < letterValues.J) {
-        const auxFunc2 = getHighestValueFunction({
-          Si: introvertedFunctions.Si,
-          Ni: introvertedFunctions.Ni,
-        });
-
-        setMbtiType(`E${auxFunc2}${domFunc}J`);
-      }
-    } else {
-      // get dominant function
-      const domFunc = getHighestValueFunction(introvertedFunctions);
-
-      // get auxiliary function
-      if (letterValues.P > letterValues.J) {
-        const auxFunc1 = getHighestValueFunction({
-          Ne: extrovertedFunctions.Ne,
-          Se: extrovertedFunctions.Se,
-        });
-
-        setMbtiType(`I${auxFunc1}${domFunc}P`);
-      }
-
-      if (letterValues.P < letterValues.J) {
-        const auxFunc2 = getHighestValueFunction({
-          Fe: extrovertedFunctions.Fe,
-          Te: extrovertedFunctions.Te,
-        });
-
-        setMbtiType(`I${domFunc}${auxFunc2}J`);
-      }
-    }
-  };
-
-  useEffect(() => {
-    console.log(mbtiType);
-  }, [mbtiType]);
 
   return (
     <div>
       <Header link="/" />
-      <div className="border-y border-gray-500 flex items-center flex-col overflow-x-hidden ">
-        <div className="relative container sm:border-x sm:border-gray-500 text-center">
+      <div className="border-y border-gray-500 flex flex-1 items-center flex-col overflow-x-hidden ">
+        <div className="relative lg:flex lg:justify-between sm:container sm:border-x sm:border-gray-500 sm:px-0 lg:px-4 lg:py-16 text-center lg:flex">
           {" "}
-          hello
+          <h1 className="lg:hidden text-2xl uppercase px-9 py-11 leading-relaxed font-semibold">
+            you&apos;re most likely an{" "}
+            <span className="text-orange-500">{mbtiType}</span>
+          </h1>
+          {/* description */}
+          <div className="py-3 px-4 lg:max-w-[350px] lg:h-fit border-y border-gray-800 text-left">
+            {mbtiType && (
+              <p className="hidden lg:block border-b border-gray-800 -mx-4 -mt-2 px-4 font-semibold ">
+                Result: {mbtiType}
+              </p>
+            )}
+            <p className="text-gray-500">
+              Extraverted • iNtuitive • Thinking • Perceiving
+            </p>
+            <p className="py-7">
+              ENTPs are frequently described as clever, cerebrally and verbally
+              quick, enthusiastic, outgoing, innovative, flexible, and
+              resourceful. -{" "}
+              <a
+                className="text-orange-500"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                source
+              </a>
+            </p>
+            <ul className=" container text-orange-500 underline list-disc inline-block px-5">
+              <li>psychologyjunkie.com</li>
+              <li>16Personalities.com</li>
+            </ul>
+          </div>
+          {/* charts */}
+          <div className="lg:flex-1 lg:max-w-xl lg:flex lg:flex-col lg:items-center">
+            {mbtiType && (
+              <h1 className="hidden lg:block font-semibold text-3xl uppercase ">
+                you&apos;re most likely an{" "}
+                <span className="text-orange-500">{mbtiType}</span>
+              </h1>
+            )}
+
+            <div className="container p-4">
+              {fourLetters && (
+                <div className="py-7">
+                  <h2 className="mb-4 font-semibold text-gray-700">
+                    4 LETTERS
+                  </h2>
+
+                  <FourLetterChart
+                    values={[
+                      [
+                        "Extroversion",
+                        fourLetters.E,
+                        "Introversion",
+                        fourLetters.I,
+                      ],
+                      ["Intuition", fourLetters.N, "Sensing", fourLetters.S],
+                      ["Feeling", fourLetters.F, "Thinking", fourLetters.T],
+                      ["Judging", fourLetters.J, "Perceiving", fourLetters.P],
+                    ]}
+                  />
+                </div>
+              )}
+              {cognitiveFunctions && (
+                <div className="pb-7 pt-3">
+                  <h2 className="mb-4 font-semibold text-gray-700">
+                    COGNITIVE FUNCTIONS
+                  </h2>
+
+                  <CognitiveFunctionChart values={cognitiveFunctions} />
+                </div>
+              )}
+            </div>
+
+            <button className="uppercase bg-orange-500 hover:bg-orange-600 text-white transition ease-in duration-200 text-2xl py-4 px-11 w-full lg:w-fit">
+              save result
+            </button>
+          </div>
+          {/* test buttons */}
+          <div className="lg:max-w-[300px]">
+            <button className="uppercase hover:bg-orange-300 transition ease-in duration-200 text-2xl py-4 w-full">
+              <h2 className="text-2xl pr-4">GET FRIENDS TO TYPE YOU</h2>
+            </button>
+            <button className="uppercase bg-orange-500 hover:bg-orange-600 text-white transition ease-in duration-200 text-2xl py-4 w-full">
+              take test
+            </button>
+          </div>
         </div>
       </div>
     </div>

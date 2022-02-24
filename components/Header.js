@@ -3,10 +3,6 @@ import Link from "next/link";
 import { useEffect } from "react";
 
 const Header = ({ link }) => {
-  useEffect(() => {
-    console.log(link);
-  }, []);
-
   return (
     <div className="relative flex justify-between container sm:border-x sm:border-gray-500 py-8 uppercase">
       <Link href={link}>

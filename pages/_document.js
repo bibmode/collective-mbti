@@ -15,7 +15,7 @@ export default function Document() {
           rel="stylesheet"
         />
       </Head>
-      <body className="bg-gradient-to-b from-white to-orange-50 min-h-screen">
+      <body className="bg-gradient-to-b from-white to-orange-50 min-h-screen text-gray-700">
         <Main />
         <NextScript />
       </body>
