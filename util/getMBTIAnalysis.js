@@ -213,27 +213,31 @@ const mbtiCalculator = () => {
 };
 
 const getMBTIAnalysis = (answers) => {
-  extractValues(answers);
-  sortCognitiveFunctions();
-  mbtiCalculator();
+  if (answers) {
+    extractValues(answers);
+    sortCognitiveFunctions();
+    mbtiCalculator();
 
-  const results = {
-    mbtiType,
-    description: typeDescriptions.data[mbtiType],
-    fourLetters: {
-      E: Math.round((letterValues.E / 64) * 100),
-      I: Math.abs(100 - Math.round((letterValues.E / 64) * 100)),
-      N: Math.round((letterValues.N / 32) * 100),
-      S: Math.abs(100 - Math.round((letterValues.N / 32) * 100)),
-      F: Math.round((letterValues.F / 32) * 100),
-      T: Math.abs(100 - Math.round((letterValues.F / 32) * 100)),
-      P: Math.round((letterValues.P / 64) * 100),
-      J: Math.round(100 - Math.round((letterValues.P / 64) * 100)),
-    },
-    cognitiveFunctions,
-  };
+    const results = {
+      mbtiType,
+      description: typeDescriptions.data[mbtiType],
+      fourLetters: {
+        E: Math.round((letterValues.E / 64) * 100),
+        I: Math.abs(100 - Math.round((letterValues.E / 64) * 100)),
+        N: Math.round((letterValues.N / 32) * 100),
+        S: Math.abs(100 - Math.round((letterValues.N / 32) * 100)),
+        F: Math.round((letterValues.F / 32) * 100),
+        T: Math.abs(100 - Math.round((letterValues.F / 32) * 100)),
+        P: Math.round((letterValues.P / 64) * 100),
+        J: Math.round(100 - Math.round((letterValues.P / 64) * 100)),
+      },
+      cognitiveFunctions,
+    };
 
-  return results;
+    return results;
+  }
+
+  return false;
 };
 
 export default getMBTIAnalysis;

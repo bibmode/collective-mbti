@@ -46,12 +46,7 @@ const SelfQuiz = ({ questions }) => {
       (choiceMade.filter((item) => item).length / choiceMade.length) * 100
     );
     setProgress(done);
-    console.log(choiceMade);
   }, [choiceMade, progress]);
-
-  useEffect(() => {
-    console.log(questions);
-  }, []);
 
   return (
     <div>
@@ -163,7 +158,7 @@ const SelfQuiz = ({ questions }) => {
           {page > 0 && page < 7 && (
             <>
               <button
-                className="uppercase bg-orange-500 cursor-pointer hover:bg-orange-600 text-white text-xl py-2 px-6 transition ease-in duration-20"
+                className="uppercase bg-orange-500 cursor-pointer hover:bg-orange-600 text-white text-xl py-2 px-6 transition ease-in duration-20 mr-8"
                 onClick={goToPrevPage}
               >
                 back
@@ -192,7 +187,7 @@ const SelfQuiz = ({ questions }) => {
                   progress === 100
                     ? "bg-orange-500 cursor-pointer hover:bg-orange-600"
                     : "bg-gray-300 cursor-default"
-                } text-white text-xl py-2 px-6 transition ease-in duration-200`}
+                } text-white text-xl py-2 px-6 transition ease-in duration-200 mr-8`}
                 onClick={goToPrevPage}
                 disabled={progress !== 100 ? true : false}
               >

@@ -11,7 +11,7 @@ const TestResult = () => {
   const [description, setDescription] = useState(null);
 
   useEffect(() => {
-    const answers = localStorage.getItem("self-quiz").split(",");
+    const answers = localStorage.getItem("self-quiz")?.split(",");
 
     const calculatedData = getMBTIAnalysis(answers);
     setFourLetters(calculatedData.fourLetters);
@@ -124,11 +124,11 @@ const TestResult = () => {
             </button>
           </div>
           {/* test buttons */}
-          <div className="lg:max-w-[300px]">
-            <button className="uppercase hover:bg-orange-300 transition ease-in duration-200 text-2xl py-4 w-full">
+          <div className="lg:max-w-[300px] lg:flex flex-col">
+            <button className="uppercase hover:bg-orange-300 transition ease-in duration-200 text-2xl py-4 w-full lg:order-1 lg:border-b border-gray-700">
               <h2 className="text-2xl pr-4">GET FRIENDS TO TYPE YOU</h2>
             </button>
-            <button className="uppercase bg-orange-500 hover:bg-orange-600 text-white transition ease-in duration-200 text-2xl py-4 w-full">
+            <button className="uppercase bg-orange-500 hover:bg-orange-600 text-white transition ease-in duration-200 text-2xl py-4 w-full lg:order-0">
               take test
             </button>
           </div>

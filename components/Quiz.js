@@ -15,7 +15,6 @@ const Quiz = ({ questions, page, handleChange, choiceMade }) => {
               className="peer hidden"
               onChange={() => {
                 handleChange(index, item[0].function);
-                console.log(item[0].function);
               }}
             />
             <span className="peer-checked:text-orange-600">
