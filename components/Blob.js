@@ -1,7 +1,7 @@
 const Blob = ({ size }) => {
   return (
     <div
-      className={`rounded-full bg-gradient-radial from-orange-200 via-orange-50/10 to-transparent blur-2xl bg-contain`}
+      className={`rounded-full bg-gradient-radial from-orange-200 via-orange-50/10 to-transparent blur-2xl bg-contain hidden sm:block`}
       style={{ height: `${size}px`, width: `${size}px` }}
     ></div>
   );

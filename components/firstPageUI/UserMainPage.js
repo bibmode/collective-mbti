@@ -1,8 +1,16 @@
 import { Icon } from "@iconify/react";
+import { useEffect, useState } from "react";
 import Blob from "../Blob";
 import Header from "../Header";
+import Typology from "../Typology";
 
 const UserMainPage = ({ session }) => {
+  const [navigation, setNavigation] = useState(0);
+
+  useEffect(() => {
+    console.log(navigation);
+  }, [navigation]);
+
   return (
     <div className="relative overflow-x-hidden min-h-screen">
       {/* header */}
@@ -10,7 +18,7 @@ const UserMainPage = ({ session }) => {
 
       {/* main */}
       <div className="border-y border-gray-500 flex items-center flex-col overflow-x-hidden">
-        <div className="relative container sm:border-x border-gray-500 flex justify-center px-0 py-4">
+        <div className="relative container sm:border-x border-gray-500 flex flex-col justify-center px-0 py-4">
           {/* profile */}
           <div className="py-5 flex flex-col items-center w-full ">
             <img
@@ -35,6 +43,61 @@ const UserMainPage = ({ session }) => {
               Edit profile
             </button>
           </div>
+
+          {/* navbar */}
+          <div className="border-b-2 flex justify-center border-gray-300 font-semibold mt-10">
+            <div className="relative flex justify-center w-fit">
+              <div className="py-1.5">
+                <input
+                  type="radio"
+                  name="navigation"
+                  id="typology"
+                  className="hidden peer"
+                  defaultChecked
+                  onChange={(e) => e.target.checked && setNavigation(0)}
+                />
+                <label
+                  htmlFor="typology"
+                  className="peer-checked:text-orange-500 uppercase px-3 py-1.5 mx-4 text-gray-500"
+                >
+                  typology
+                </label>
+              </div>
+
+              <div className="py-1.5">
+                <input
+                  type="radio"
+                  name="navigation"
+                  id="about"
+                  className="hidden peer"
+                  onChange={(e) => e.target.checked && setNavigation(1)}
+                />
+                <label
+                  htmlFor="about"
+                  className="peer-checked:text-orange-500 uppercase px-3 py-1.5 mx-4 text-gray-500"
+                >
+                  about
+                </label>
+              </div>
+
+              {/* color indicator */}
+              <div
+                className="h-1 w-24 bg-orange-500 absolute"
+                style={{
+                  left: `${navigation ? "auto" : "1.3rem"}`,
+                  right: `${!navigation ? "auto" : "0.39rem"}`,
+                  bottom: "-1.5px",
+                }}
+              />
+            </div>
+          </div>
+
+          {!navigation && (
+            <div className="container py-12">
+              {/* entry */}
+              <Typology />
+            </div>
+          )}
         </div>
       </div>
     </div>
