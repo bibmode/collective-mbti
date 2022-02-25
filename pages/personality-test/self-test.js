@@ -5,6 +5,7 @@ import ProgressBar from "../../components/ProgressBar";
 import { selfQuestions } from "../../data/self-questions";
 import _ from "lodash";
 import Quiz from "../../components/Quiz";
+import Blob from "../../components/Blob";
 
 const SelfQuiz = ({ questions }) => {
   const initialArray = new Array(64).fill(0);
@@ -49,12 +50,17 @@ const SelfQuiz = ({ questions }) => {
   }, [choiceMade, progress]);
 
   return (
-    <div>
+    <div className="overflow-hidden">
       {/* header */}
       <Header link="/" />
 
       {/* main content */}
-      <div className="border-y border-gray-500 flex items-center flex-col overflow-x-hidden pb-8">
+      <div className="border-y border-gray-500 flex items-center flex-col overflow-hidden">
+        {/* blob */}
+        <div className="absolute -z-10" style={{ top: "200px", left: "-15%" }}>
+          <Blob size={800} />
+        </div>
+
         {/* main header */}
         <div className="relative container sm:border-x sm:border-gray-500 text-center">
           {/* theme buttons */}
@@ -69,7 +75,7 @@ const SelfQuiz = ({ questions }) => {
         </div>
 
         {/* quiz */}
-        <div className="w-full container border-t md:border-t-0 border-gray-500 sm:border-x sm:border-gray-500 text-center">
+        <div className="relative w-full container border-t md:border-t-0 border-gray-500 sm:border-x sm:border-gray-500 text-center overflow-hidden">
           {/* items */}
           {page === 0 && (
             <Quiz
@@ -140,7 +146,7 @@ const SelfQuiz = ({ questions }) => {
         {/* {checkPageProgress() && <h1>hello</h1>} */}
 
         {/* submit */}
-        <div className="py-12 container flex justify-center sm:border-x border-gray-500">
+        <div className="py-12 pb-24 container flex justify-center sm:border-x border-gray-500">
           {page === 0 && (
             <button
               className={`uppercase ${

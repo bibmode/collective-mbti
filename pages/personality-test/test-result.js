@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import Blob from "../../components/Blob";
 import CognitiveFunctionChart from "../../components/CognitiveFuncChart";
+import Footer from "../../components/Footer";
 import FourLetterChart from "../../components/fourLetterChart";
 import Header from "../../components/Header";
 import getMBTIAnalysis from "../../util/getMBTIAnalysis";
@@ -23,10 +25,17 @@ const TestResult = () => {
   }, []);
 
   return (
-    <div>
+    <div className="relative overflow-hidden lg:flex flex-col min-h-screen">
+      {/* blob */}
+      <div className="absolute -z-10" style={{ top: "330px", left: "-25%" }}>
+        <Blob size={1200} />
+      </div>
+
       <Header link="/" />
-      <div className="border-y border-gray-500 flex flex-1 items-center flex-col overflow-x-hidden ">
-        <div className="relative lg:flex lg:justify-between sm:container sm:border-x sm:border-gray-500 sm:px-0 lg:px-4 lg:py-16 text-center lg:flex">
+
+      {/* main content */}
+      <div className="border-y border-gray-500 flex flex-1 items-center flex-col overflow-y-hidden">
+        <div className="relative lg:flex grow lg:justify-between sm:container sm:border-x sm:border-gray-500 sm:px-0 lg:px-4 lg:py-16 text-center">
           {" "}
           <h1 className="lg:hidden text-2xl uppercase px-9 py-11 leading-relaxed font-semibold">
             you&apos;re most likely an{" "}
@@ -78,7 +87,7 @@ const TestResult = () => {
             </div>
           )}
           {/* charts */}
-          <div className="lg:flex-1 lg:max-w-xl lg:flex lg:flex-col lg:items-center">
+          <div className="lg:flex-1 lg:max-w-[40%] lg:flex lg:flex-col lg:items-center">
             {mbtiType && (
               <h1 className="hidden lg:block font-semibold text-3xl uppercase ">
                 you&apos;re most likely an{" "}
@@ -125,7 +134,7 @@ const TestResult = () => {
           </div>
           {/* test buttons */}
           <div className="lg:max-w-[300px] lg:flex flex-col">
-            <button className="uppercase hover:bg-orange-300 transition ease-in duration-200 text-2xl py-4 w-full lg:order-1 lg:border-b border-gray-700">
+            <button className="uppercase hover:bg-orange-300 transition ease-in duration-200 text-2xl py-4 w-full lg:order-1 lg:border-b border-gray-700 hover:border-white">
               <h2 className="text-2xl pr-4">GET FRIENDS TO TYPE YOU</h2>
             </button>
             <button className="uppercase bg-orange-500 hover:bg-orange-600 text-white transition ease-in duration-200 text-2xl py-4 w-full lg:order-0">
@@ -134,6 +143,9 @@ const TestResult = () => {
           </div>
         </div>
       </div>
+
+      {/* footer */}
+      <Footer />
     </div>
   );
 };

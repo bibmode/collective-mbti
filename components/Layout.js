@@ -31,11 +31,6 @@ const Layout = (props) => {
           }}
         >
           <main className="z-20">{props.children}</main>
-          <div className="z-30">
-            <div className="container min-h-[2.5rem] border-x border-gray-800">
-              <p>hello</p>
-            </div>
-          </div>
         </AppContext.Provider>
       </div>
     </>
