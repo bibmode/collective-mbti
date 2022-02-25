@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Blob from "../../components/Blob";
 import CognitiveFunctionChart from "../../components/CognitiveFuncChart";
+import Description from "../../components/Description";
 import Footer from "../../components/Footer";
 import FourLetterChart from "../../components/fourLetterChart";
 import Header from "../../components/Header";
@@ -43,48 +44,7 @@ const TestResult = () => {
           </h1>
           {/* description */}
           {description && (
-            <div className="py-3 px-4 lg:max-w-[350px] lg:h-fit border-y border-gray-800 text-left">
-              {mbtiType && (
-                <p className="hidden lg:block border-b border-gray-800 -mx-4 -mt-2 px-4 font-semibold ">
-                  Result: {mbtiType}
-                </p>
-              )}
-              <p className="text-gray-500">
-                Extraverted • iNtuitive • Thinking • Perceiving
-              </p>
-              <p className="py-7">
-                {description.description}
-                <a
-                  className="text-orange-500"
-                  href={description.source}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {" "}
-                  - source
-                </a>
-              </p>
-              <ul className=" container text-orange-500 underline list-disc inline-block px-5">
-                <li>
-                  <a
-                    href="https://personalityjunkie.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    personalityjunkie.com
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://www.truity.com/myers-briggs/about-myers-briggs-personality-typing"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    truity.com
-                  </a>
-                </li>
-              </ul>
-            </div>
+            <Description description={description} mbtiType={mbtiType} />
           )}
           {/* charts */}
           <div className="lg:flex-1 lg:max-w-[40%] lg:flex lg:flex-col lg:items-center">

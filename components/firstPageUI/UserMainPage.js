@@ -19,7 +19,7 @@ const UserMainPage = ({ session }) => {
 
       {/* main */}
       <div className="border-y border-gray-500 overflow-x-hidden">
-        <div className="relative container sm:border-x border-gray-500 flex flex-col justify-center px-0 py-4">
+        <div className="relative container sm:border-x border-gray-500 flex flex-col justify-center px-0 pt-4">
           {/* profile */}
           <div className="py-5 flex flex-col items-center w-full ">
             <img
@@ -95,7 +95,7 @@ const UserMainPage = ({ session }) => {
 
           {/* sections */}
           {navigation ? (
-            <div className="container py-4">
+            <div className="container pt-4 flex flex-col justify-between">
               {/* entry */}
               <About />
             </div>

@@ -1,10 +1,19 @@
+import { Icon } from "@iconify/react";
 import { useEffect, useState } from "react";
+import { typeDescriptions } from "../data/type-descriptions";
 import CognitiveFunctionChart from "./CognitiveFuncChart";
+import Description from "./Description";
 import FourLetterChart from "./fourLetterChart";
 
 const About = () => {
   const [navChart, setNavChart] = useState([0, 0, 0]);
   const [accordion, setAccordion] = useState([true, false, false]);
+  const [descriptionsAccordion, setDescriptionsAccordion] = useState([
+    true,
+    false,
+    false,
+  ]);
+  // const description = typeDescriptions;
 
   useEffect(() => {
     console.log(navChart);
@@ -66,6 +75,7 @@ const About = () => {
     {
       type: "Accumulative result",
       mbtiType: "ENTP",
+
       fourLetters: {
         E: 44,
         F: 31,
@@ -108,7 +118,7 @@ const About = () => {
       {results.map((result, index) => (
         <div key={index} className="my-3">
           {/* title */}
-          <div className="flex items-center">
+          <div className="flex items-center text-sm">
             <h4 className="mr-1 font-semibold">{result.type}:</h4>
             <p className="flex-1">{result.mbtiType}</p>
 
@@ -136,7 +146,6 @@ const About = () => {
           </div>
 
           {/* main */}
-
           {accordion[index] ? (
             <div>
               {/* navigation options */}
@@ -224,6 +233,100 @@ const About = () => {
           ) : null}
         </div>
       ))}
+
+      {/* SHARE BAR */}
+      <div className="flex items-center py-3 border-y border-gray-700 mt-10 mb-14 -mx-4 px-4">
+        <p className="uppercase max-w-[50px] leading-5">share results</p>
+        <button
+          href="#"
+          target="_blank"
+          className="group rounded-full border border-gray-900 p-3 ml-auto  hover:border-orange-500 transition ease-in duration-200 cursor-pointer"
+        >
+          <Icon
+            icon="cib:facebook-f"
+            className="group-hover:text-orange-500 transition ease-in duration-200"
+          />
+        </button>
+        <button
+          href="#"
+          target="_blank"
+          className="group rounded-full border border-gray-900 p-3 ml-3 hover:border-orange-500 transition ease-in duration-200 cursor-pointer"
+        >
+          <Icon
+            icon="cib:twitter"
+            className="group-hover:text-orange-500 transition ease-in duration-200"
+          />
+        </button>
+        <button
+          href="#"
+          target="_blank"
+          className="group rounded-full border border-gray-900 p-3 ml-3 hover:border-orange-500 transition ease-in duration-200 cursor-pointer"
+        >
+          <Icon
+            icon="cib:instagram"
+            className="group-hover:text-orange-500 transition ease-in duration-200"
+          />
+        </button>
+        <button
+          href="#"
+          target="_blank"
+          className="group rounded-full border border-gray-900 p-3 ml-3 hover:border-orange-500 transition ease-in duration-200 cursor-pointer"
+        >
+          <Icon
+            icon="akar-icons:link-chain"
+            className="group-hover:text-orange-500 transition ease-in duration-200"
+          />
+        </button>
+      </div>
+
+      {/* DESCRIPTIONS */}
+      {results.map((result, index) => (
+        <div key={index} className="-mx-4">
+          <div className="flex items-center container py-3 border-b border-gray-800">
+            <h4 className="mr-1 font-semibold text-md flex-1">
+              {result.type}: {result.mbtiType}
+            </h4>
+
+            <input
+              type="checkbox"
+              name="phone-description"
+              id={`phone-description-${index}`}
+              defaultChecked={descriptionsAccordion[index]}
+              onChange={(e) =>
+                setDescriptionsAccordion((prev) => {
+                  prev[index] = e.target.checked;
+                  return [...prev];
+                })
+              }
+              className="peer hidden"
+            />
+
+            <label
+              htmlFor={`phone-description-${index}`}
+              className="w-4 block peer-checked:rotate-45"
+            >
+              <div className="w-full h-0.5 translate-y-0.5 bg-gray-500" />
+              <div className="w-full h-0.5 bg-gray-500 rotate-90" />
+            </label>
+          </div>
+
+          {descriptionsAccordion[index] && (
+            <Description
+              description={typeDescriptions.data[result.mbtiType]}
+              mbtiType={result.mbtiType}
+            />
+          )}
+        </div>
+      ))}
+
+      <div className="lg:max-w-[300px] lg:flex flex-col -mx-4 mt-auto">
+        <button className="uppercase bg-orange-500 hover:bg-orange-600 text-white transition ease-in duration-200 text-2xl py-4 w-full lg:order-0 mt-24">
+          take test
+        </button>
+        <button className="uppercase hover:bg-orange-300 transition ease-in duration-200 text-2xl py-4 w-full lg:order-1 lg:border-b border-gray-700 hover:border-white">
+          <h2 className="text-2xl pr-4">GET FRIENDS TO TYPE YOU</h2>
+        </button>
+      </div>
     </>
   );
 };
