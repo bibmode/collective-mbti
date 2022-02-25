@@ -1,5 +1,6 @@
 import { Icon } from "@iconify/react";
 import { useEffect, useState } from "react";
+import About from "../About";
 import Blob from "../Blob";
 import Header from "../Header";
 import Typology from "../Typology";
@@ -17,7 +18,7 @@ const UserMainPage = ({ session }) => {
       <Header link={false} />
 
       {/* main */}
-      <div className="border-y border-gray-500 flex items-center flex-col overflow-x-hidden">
+      <div className="border-y border-gray-500 overflow-x-hidden">
         <div className="relative container sm:border-x border-gray-500 flex flex-col justify-center px-0 py-4">
           {/* profile */}
           <div className="py-5 flex flex-col items-center w-full ">
@@ -92,7 +93,13 @@ const UserMainPage = ({ session }) => {
             </div>
           </div>
 
-          {!navigation && (
+          {/* sections */}
+          {navigation ? (
+            <div className="container py-4">
+              {/* entry */}
+              <About />
+            </div>
+          ) : (
             <div className="container py-12">
               {/* entry */}
               <Typology />
