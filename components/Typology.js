@@ -80,7 +80,7 @@ const Typology = () => {
           />
           <label
             htmlFor="typology-4Letters"
-            className="peer-checked:text-gray-600 peer-checked:font-semibold uppercase text-xs text-gray-400 px-4 border-r border-gray-500"
+            className="peer-checked:text-gray-600 peer-checked:font-semibold uppercase text-xs text-gray-400 px-4 border-r border-gray-500 cursor-pointer"
           >
             4 letters
           </label>
@@ -96,7 +96,7 @@ const Typology = () => {
           />
           <label
             htmlFor="typology-cogFunc"
-            className="peer-checked:text-gray-600 peer-checked:font-semibold uppercase text-xs text-gray-400 px-4"
+            className="peer-checked:text-gray-600 peer-checked:font-semibold uppercase text-xs text-gray-400 px-4 cursor-pointer"
           >
             cognitive functions
           </label>

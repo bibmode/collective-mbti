@@ -1,103 +1,25 @@
 import { Icon } from "@iconify/react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { typeDescriptions } from "../data/type-descriptions";
 import CognitiveFunctionChart from "./CognitiveFuncChart";
 import Description from "./Description";
 import FourLetterChart from "./fourLetterChart";
+import { AppContext } from "./Layout";
+import ResultsDescriptions from "./ResultsDescriptions";
 
-const About = () => {
-  const [navChart, setNavChart] = useState([0, 0, 0]);
-  const [accordion, setAccordion] = useState([true, false, false]);
-  const [descriptionsAccordion, setDescriptionsAccordion] = useState([
-    true,
-    false,
-    false,
-  ]);
-  // const description = typeDescriptions;
-
-  useEffect(() => {
-    console.log(navChart);
-  }, [navChart]);
+const About = ({ results }) => {
+  const {
+    setAccordion,
+    accordion,
+    setNavChart,
+    navChart,
+    descriptionsAccordion,
+    setDescriptionsAccordion,
+  } = useContext(AppContext);
 
   useEffect(() => {
-    console.log(accordion);
-  }, [accordion]);
-
-  const results = [
-    {
-      type: "Self-tested",
-      mbtiType: "INTP",
-      fourLetters: {
-        E: 44,
-        F: 31,
-        I: 56,
-        J: 31,
-        N: 72,
-        P: 69,
-        S: 28,
-        T: 69,
-      },
-      cognitiveFunctions: [
-        ["Ti", 100],
-        ["Ne", 88],
-        ["Ni", 56],
-        ["Fi", 50],
-        ["Se", 38],
-        ["Te", 38],
-        ["Si", 19],
-        ["Fe", 13],
-      ],
-    },
-    {
-      type: "According to friends",
-      mbtiType: "ENTP",
-      fourLetters: {
-        E: 44,
-        F: 31,
-        I: 56,
-        J: 31,
-        N: 72,
-        P: 69,
-        S: 28,
-        T: 69,
-      },
-      cognitiveFunctions: [
-        ["Ti", 100],
-        ["Ne", 88],
-        ["Ni", 56],
-        ["Fi", 50],
-        ["Se", 38],
-        ["Te", 38],
-        ["Si", 19],
-        ["Fe", 13],
-      ],
-    },
-    {
-      type: "Accumulative result",
-      mbtiType: "ENTP",
-
-      fourLetters: {
-        E: 44,
-        F: 31,
-        I: 56,
-        J: 31,
-        N: 72,
-        P: 69,
-        S: 28,
-        T: 69,
-      },
-      cognitiveFunctions: [
-        ["Ti", 100],
-        ["Ne", 88],
-        ["Ni", 56],
-        ["Fi", 50],
-        ["Se", 38],
-        ["Te", 38],
-        ["Si", 19],
-        ["Fe", 13],
-      ],
-    },
-  ];
+    console.log(results);
+  }, []);
 
   return (
     <>
@@ -111,11 +33,11 @@ const About = () => {
       {/* RESULTS */}
 
       {/* header */}
-      <div className="py-1 mt-4 text-lg font-semibold -mx-4 border-b border-gray-500">
-        <h3 className="container">Results</h3>
+      <div className="py-1 mt-4 text-lg font-semibold -mx-4 lg:mx-0  border-b border-gray-500">
+        <h3 className="container lg:px-0">Results</h3>
       </div>
 
-      {results.map((result, index) => (
+      {results?.map((result, index) => (
         <div key={index} className="my-3">
           {/* title */}
           <div className="flex items-center text-sm">
@@ -138,7 +60,7 @@ const About = () => {
 
             <label
               htmlFor={`self-tested-${index}`}
-              className="w-4 block peer-checked:rotate-45"
+              className="w-4 h-4 block peer-checked:rotate-45 cursor-pointer"
             >
               <div className="w-full h-0.5 translate-y-0.5 bg-gray-500" />
               <div className="w-full h-0.5 bg-gray-500 rotate-90" />
@@ -167,7 +89,7 @@ const About = () => {
                   />
                   <label
                     htmlFor={`typology-4Letters-${index}`}
-                    className="peer-checked:text-gray-600 peer-checked:font-semibold uppercase text-xs text-gray-400 px-4 border-r border-gray-500"
+                    className="peer-checked:text-gray-600 peer-checked:font-semibold uppercase text-xs text-gray-400 px-4 border-r border-gray-500 cursor-pointer"
                   >
                     4 letters
                   </label>
@@ -189,7 +111,7 @@ const About = () => {
                   />
                   <label
                     htmlFor={`typology-cogFunc-${index}`}
-                    className="peer-checked:text-gray-600 peer-checked:font-semibold uppercase text-xs text-gray-400 px-4"
+                    className="peer-checked:text-gray-600 peer-checked:font-semibold uppercase text-xs text-gray-400 px-4 cursor-pointer"
                   >
                     cognitive functions
                   </label>
@@ -235,7 +157,7 @@ const About = () => {
       ))}
 
       {/* SHARE BAR */}
-      <div className="flex items-center py-3 border-y border-gray-700 mt-10 mb-14 -mx-4 px-4">
+      <div className="flex items-center py-3 border-y border-gray-700 mt-10 mb-14 -mx-4 lg:mx-0 px-4 lg:px-0">
         <p className="uppercase max-w-[50px] leading-5">share results</p>
         <button
           href="#"
@@ -280,52 +202,8 @@ const About = () => {
       </div>
 
       {/* DESCRIPTIONS */}
-      {results.map((result, index) => (
-        <div key={index} className="-mx-4">
-          <div className="flex items-center container py-3 border-b border-gray-800">
-            <h4 className="mr-1 font-semibold text-md flex-1">
-              {result.type}: {result.mbtiType}
-            </h4>
-
-            <input
-              type="checkbox"
-              name="phone-description"
-              id={`phone-description-${index}`}
-              defaultChecked={descriptionsAccordion[index]}
-              onChange={(e) =>
-                setDescriptionsAccordion((prev) => {
-                  prev[index] = e.target.checked;
-                  return [...prev];
-                })
-              }
-              className="peer hidden"
-            />
-
-            <label
-              htmlFor={`phone-description-${index}`}
-              className="w-4 block peer-checked:rotate-45"
-            >
-              <div className="w-full h-0.5 translate-y-0.5 bg-gray-500" />
-              <div className="w-full h-0.5 bg-gray-500 rotate-90" />
-            </label>
-          </div>
-
-          {descriptionsAccordion[index] && (
-            <Description
-              description={typeDescriptions.data[result.mbtiType]}
-              mbtiType={result.mbtiType}
-            />
-          )}
-        </div>
-      ))}
-
-      <div className="lg:max-w-[300px] lg:flex flex-col -mx-4 mt-auto">
-        <button className="uppercase bg-orange-500 hover:bg-orange-600 text-white transition ease-in duration-200 text-2xl py-4 w-full lg:order-0 mt-24">
-          take test
-        </button>
-        <button className="uppercase hover:bg-orange-300 transition ease-in duration-200 text-2xl py-4 w-full lg:order-1 lg:border-b border-gray-700 hover:border-white">
-          <h2 className="text-2xl pr-4">GET FRIENDS TO TYPE YOU</h2>
-        </button>
+      <div className="lg:hidden">
+        <ResultsDescriptions results={results} customName="phone" />
       </div>
     </>
   );

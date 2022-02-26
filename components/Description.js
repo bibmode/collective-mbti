@@ -1,11 +1,6 @@
 const Description = ({ description, mbtiType }) => {
   return (
-    <div className="py-3 px-4 lg:max-w-[350px] lg:h-fit border-b border-gray-800 text-left">
-      {mbtiType && (
-        <p className="hidden lg:block border-b border-gray-800 -mx-4 -mt-2 px-4 font-semibold ">
-          Result: {mbtiType}
-        </p>
-      )}
+    <div className="py-3 px-4 lg:px-0 lg:max-w-xs xl:max-w-[350px] lg:h-fit border-b border-gray-800 text-left">
       <p className="text-gray-500">
         Extraverted • iNtuitive • Thinking • Perceiving
       </p>
