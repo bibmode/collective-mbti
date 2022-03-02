@@ -35,7 +35,7 @@ const InvitationModal = ({ setInvitation }) => {
     const userId = session.data.user.sub;
     const testId = shortid.generate();
     setInvitationUrl(
-      `${origin}/invite-test/?invited=${name}&relation=${relation}&user=${userId}&test=${testId}`
+      `${origin}/personality-test/invite-test/?invited=${name}&relation=${relation}&user=${userId}&test=${testId}`
     );
   };
 
