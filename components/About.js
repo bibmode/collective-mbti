@@ -7,7 +7,7 @@ import FourLetterChart from "./fourLetterChart";
 import { AppContext } from "./Layout";
 import ResultsDescriptions from "./ResultsDescriptions";
 
-const About = ({ results }) => {
+const About = () => {
   const {
     setAccordion,
     accordion,
@@ -15,11 +15,8 @@ const About = ({ results }) => {
     navChart,
     descriptionsAccordion,
     setDescriptionsAccordion,
+    results,
   } = useContext(AppContext);
-
-  useEffect(() => {
-    console.log(results);
-  }, []);
 
   return (
     <>
@@ -41,9 +38,17 @@ const About = ({ results }) => {
         <div key={index} className="my-3">
           {/* title */}
           <div className="flex items-center text-sm">
-            <h4 className="mr-1 font-semibold">{result.type}:</h4>
-            <p className="flex-1">{result.mbtiType}</p>
+            <h4 className="mr-1 font-semibold">
+              {index === 0
+                ? "Self-tested"
+                : index === 1
+                ? "According to Friends"
+                : "Accumulative Result"}
+              :
+            </h4>
+            <p className="flex-1">{result ? result.mbtiType : "no data"}</p>
 
+            {/* accordion button */}
             <input
               type="checkbox"
               name="self-tested"
@@ -68,7 +73,7 @@ const About = ({ results }) => {
           </div>
 
           {/* main */}
-          {accordion[index] ? (
+          {accordion[index] && result ? (
             <div>
               {/* navigation options */}
               <div className="my-2 flex justify-center">
@@ -81,7 +86,6 @@ const About = ({ results }) => {
                     defaultChecked
                     onClick={() =>
                       setNavChart((prev) => {
-                        console.log(index);
                         prev[index] = 0;
                         return [...prev];
                       })
@@ -103,7 +107,6 @@ const About = ({ results }) => {
                     id={`typology-cogFunc-${index}`}
                     onClick={() =>
                       setNavChart((prev) => {
-                        console.log(index);
                         prev[index] = 1;
                         return [...prev];
                       })
@@ -120,33 +123,33 @@ const About = ({ results }) => {
 
               {/* charts */}
               {navChart[index] ? (
-                <CognitiveFunctionChart values={result.cognitiveFunctions} />
+                <CognitiveFunctionChart values={result?.cognitiveFunctions} />
               ) : (
                 <FourLetterChart
                   values={[
                     [
                       "Extroversion",
-                      result.fourLetters.E,
+                      result?.fourLetters.E,
                       "Introversion",
-                      result.fourLetters.I,
+                      result?.fourLetters.I,
                     ],
                     [
                       "Intuition",
-                      result.fourLetters.N,
+                      result?.fourLetters.N,
                       "Sensing",
-                      result.fourLetters.S,
+                      result?.fourLetters.S,
                     ],
                     [
                       "Feeling",
-                      result.fourLetters.F,
+                      result?.fourLetters.F,
                       "Thinking",
-                      result.fourLetters.T,
+                      result?.fourLetters.T,
                     ],
                     [
                       "Judging",
-                      result.fourLetters.J,
+                      result?.fourLetters.J,
                       "Perceiving",
-                      result.fourLetters.P,
+                      result?.fourLetters.P,
                     ],
                   ]}
                 />
@@ -203,7 +206,7 @@ const About = ({ results }) => {
 
       {/* DESCRIPTIONS */}
       <div className="lg:hidden">
-        <ResultsDescriptions results={results} customName="phone" />
+        {/* <ResultsDescriptions results={results} customName="phone" /> */}
       </div>
     </>
   );

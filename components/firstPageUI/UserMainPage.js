@@ -9,10 +9,6 @@ import Typology from "../Typology";
 const UserMainPage = ({ session }) => {
   const [navigation, setNavigation] = useState(0);
 
-  useEffect(() => {
-    console.log(navigation);
-  }, [navigation]);
-
   const results = [
     {
       type: "Self-tested",
@@ -100,12 +96,12 @@ const UserMainPage = ({ session }) => {
           {/* profile */}
           <div className="py-5 flex flex-col items-center w-full lg:max-w-xs xl:max-w-[380px]">
             <img
-              className="rounded-full border-2 border-orange-500"
-              src={session.user.image}
+              className="rounded-full border-2 border-orange-500 w-20 h-20"
+              src={session.user.picture}
               alt="user display picture"
             />
 
-            <h2 className="mt-8 mb-3 uppercase text-2xl font-semibold">
+            <h2 className="mt-6 mb-3 uppercase text-2xl font-semibold">
               {session.user.name}
             </h2>
 
@@ -123,7 +119,7 @@ const UserMainPage = ({ session }) => {
 
             <div className="hidden lg:block container lg:px-0 pt-4 flex flex-col justify-between">
               {/* entry */}
-              <About results={results} />
+              <About />
             </div>
           </div>
 
@@ -179,27 +175,27 @@ const UserMainPage = ({ session }) => {
           {navigation ? (
             <div className="lg:hidden container pt-4 flex flex-col justify-between">
               {/* entry */}
-              <About results={results} />
+              {/* <About /> */}
             </div>
           ) : (
             <div className="lg:hidden container py-12">
               {/* entry */}
-              <Typology />
+              <Typology customName="phone1" />
             </div>
           )}
 
-          <div className="hidden lg:block container py-12 lg:pt-0 lg:flex-1 xl:px-16">
+          <div className="hidden lg:block container py-12 lg:pt-0 lg:flex-1 lg:max-w-2xl xl:px-16">
             {/* header */}
             <div className="py-3 mb-9 border-b border-gray-800 hidden lg:block">
               <h4 className="mr-1 font-semibold text-md flex-1">Typology</h4>
             </div>
             {/* entry */}
-            <Typology />
+            <Typology customName="phone2" />
           </div>
 
           {/* DESCRIPTIONS */}
           <div className="hidden lg:block">
-            <ResultsDescriptions customName="desktop" results={results} />
+            <ResultsDescriptions customName="desktop" />
           </div>
         </div>
       </div>

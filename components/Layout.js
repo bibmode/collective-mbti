@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { createContext, useEffect, useState } from "react";
+import InvitationModal from "./InvitationModal";
 import RulesModal from "./RulesModal";
 
 export const AppContext = createContext("");
@@ -8,6 +9,8 @@ const Layout = (props) => {
   const Router = useRouter();
   const [rules, setRules] = useState(false);
   const [ruleBtnMessage, setRuleBtnMessage] = useState("start");
+  const [invitation, setInvitation] = useState(false);
+  const [results, setResults] = useState([0, 0, 0]);
 
   const hello = "hello";
 
@@ -19,6 +22,10 @@ const Layout = (props) => {
     });
   }, []);
 
+  useEffect(() => {
+    console.log(results);
+  }, [results]);
+
   // user profile states
   const [navChart, setNavChart] = useState([0, 0, 0]);
   const [accordion, setAccordion] = useState([true, false, false]);
@@ -29,17 +36,10 @@ const Layout = (props) => {
   ]);
   // const description = typeDescriptions;
 
-  useEffect(() => {
-    console.log(navChart);
-  }, [navChart]);
-
-  useEffect(() => {
-    console.log(accordion);
-  }, [accordion]);
-
   return (
     <>
       {rules && <RulesModal btnMessage={ruleBtnMessage} setRules={setRules} />}
+      {invitation && <InvitationModal setInvitation={setInvitation} />}
       <div>
         <AppContext.Provider
           value={{
@@ -52,6 +52,9 @@ const Layout = (props) => {
             setAccordion,
             descriptionsAccordion,
             setDescriptionsAccordion,
+            results,
+            setResults,
+            setInvitation,
           }}
         >
           <main className="z-20">{props.children}</main>

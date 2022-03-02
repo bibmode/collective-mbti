@@ -1,31 +1,35 @@
 import { connectToDatabase } from "../../util/mongodb";
-const ObjectId = require("mongodb").ObjectId;
 
 export default async function handler(req, res) {
   // switch the methods
   switch (req.method) {
     case "POST": {
-      return addResult(req, res);
+      return getResult(req, res);
     }
   }
 }
 
-async function addResult(req, res) {
+async function getResult(req, res) {
+  req.body = JSON.parse(req.body);
+  console.log(req.body.userEmail);
+
   try {
     // connect to the database
     let { db } = await connectToDatabase();
-    // add the post
-    await db.collection("selftest-results").insertOne(JSON.parse(req.body));
-    // return a message
+    // fetch the posts
+    let mbtiResult = await db
+      .collection("users")
+      .find({ email: req.body.userEmail })
+      .sort({ published: -1 })
+      .toArray();
 
-    console.log(res);
-
+    // return the posts
     return res.json({
-      message: "Result added successfully",
+      message: JSON.parse(JSON.stringify(mbtiResult)),
       success: true,
     });
   } catch (error) {
-    // return an error
+    // return the error
     return res.json({
       message: new Error(error).message,
       success: false,

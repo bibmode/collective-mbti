@@ -1,27 +1,32 @@
 import { connectToDatabase } from "../../util/mongodb";
-const ObjectId = require("mongodb").ObjectId;
 
 export default async function handler(req, res) {
   // switch the methods
   switch (req.method) {
-    case "POST": {
-      return addResult(req, res);
+    case "PUT": {
+      return updateResult(req, res);
     }
   }
 }
 
-async function addResult(req, res) {
+async function updateResult(req, res) {
+  const { mbti, userEmail } = JSON.parse(req.body);
+  console.log(mbti, userEmail);
   try {
     // connect to the database
     let { db } = await connectToDatabase();
-    // add the post
-    await db.collection("selftest-results").insertOne(JSON.parse(req.body));
+
+    // update the published status of the post
+    await db.collection("users").updateOne(
+      {
+        email: userEmail,
+      },
+      { $set: { selfTested: mbti } }
+    );
+
     // return a message
-
-    console.log(res);
-
     return res.json({
-      message: "Result added successfully",
+      message: "User updated successfully",
       success: true,
     });
   } catch (error) {

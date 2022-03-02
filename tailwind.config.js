@@ -15,7 +15,7 @@ module.exports = {
       lg: "1024px",
       // => @media (min-width: 1024px) { ... }
 
-      xl: "1350px",
+      xl: "1270px",
       // => @media (min-width: 1280px) { ... }
 
       "2xl": "1536px",
@@ -34,5 +34,9 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require("@tailwindcss/forms")({
+      strategy: "class",
+    }),
+  ],
 };

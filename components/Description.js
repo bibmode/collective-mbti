@@ -5,10 +5,10 @@ const Description = ({ description, mbtiType }) => {
         Extraverted • iNtuitive • Thinking • Perceiving
       </p>
       <p className="py-7">
-        {description.description}
+        {description?.description}
         <a
           className="text-orange-500"
-          href={description.source}
+          href={description?.source}
           target="_blank"
           rel="noopener noreferrer"
         >

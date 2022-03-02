@@ -1,13 +1,21 @@
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Header from "../../components/Header";
 import ProgressBar from "../../components/ProgressBar";
 import { selfQuestions } from "../../data/self-questions";
 import _ from "lodash";
 import Quiz from "../../components/Quiz";
 import Blob from "../../components/Blob";
+import { useSession } from "next-auth/react";
+import getMBTIAnalysis from "../../util/getMBTIAnalysis";
+import { useRouter } from "next/router";
+import { AppContext } from "../../components/Layout";
 
 const SelfQuiz = ({ questions }) => {
+  const { setResults, results } = useContext(AppContext);
+  const { data: session } = useSession();
+  const router = useRouter();
+
   const initialArray = new Array(64).fill(0);
 
   const [choiceMade, setChoiceMade] = useState(initialArray);
@@ -23,6 +31,10 @@ const SelfQuiz = ({ questions }) => {
     setChoiceMade(newValues);
   };
 
+  // useEffect(() => {
+  //   console.log(session);
+  // }, []);
+
   // page navigations
   const goToPrevPage = () => {
     setPage(page - 1);
@@ -36,9 +48,36 @@ const SelfQuiz = ({ questions }) => {
     setPage(page + 1);
   };
 
-  // save answers to local storage
-  const handleDoneQuiz = () => {
-    localStorage.setItem("self-quiz", choiceMade);
+  const handleDoneQuiz = async () => {
+    // save answers to local storage if not logged in
+    if (!session) {
+      localStorage.setItem("self-quiz", choiceMade);
+      router.push("/personality-test/test-result");
+    }
+
+    //get answers
+    const calculatedData = getMBTIAnalysis(choiceMade, "Self-tested");
+
+    // save answers to database
+    const newResult = {
+      userEmail: session.user.email,
+      mbti: calculatedData,
+    };
+
+    let response = await fetch("/api/selfResult", {
+      method: "PUT",
+      body: JSON.stringify(newResult),
+    });
+
+    // get the data
+    let data = await response.json();
+
+    console.log(data);
+
+    if (data.success) {
+      setResults([calculatedData, results[1], results[2]]);
+      router.push("/");
+    }
   };
 
   // for progress bar
@@ -199,19 +238,19 @@ const SelfQuiz = ({ questions }) => {
               >
                 back
               </button>
-              <Link href="/personality-test/test-result" passHref>
-                <button
-                  className={`uppercase ${
-                    progress === 100
-                      ? "bg-orange-500 cursor-pointer hover:bg-orange-600"
-                      : "bg-gray-300 cursor-default"
-                  } text-white text-xl py-2 px-6 transition ease-in duration-200`}
-                  onClick={handleDoneQuiz}
-                  disabled={progress !== 100 ? true : false}
-                >
-                  finish
-                </button>
-              </Link>
+              {/* <Link href="/personality-test/test-result" passHref> */}
+              <button
+                className={`uppercase ${
+                  progress === 100
+                    ? "bg-orange-500 cursor-pointer hover:bg-orange-600"
+                    : "bg-gray-300 cursor-default"
+                } text-white text-xl py-2 px-6 transition ease-in duration-200`}
+                onClick={handleDoneQuiz}
+                disabled={progress !== 100 ? true : false}
+              >
+                finish
+              </button>
+              {/* </Link> */}
             </>
           )}
         </div>

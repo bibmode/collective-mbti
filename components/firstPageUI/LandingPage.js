@@ -26,7 +26,7 @@ const LandingPage = () => {
           {/* login button */}
           <button
             className="flex items-center justify-center text-md px-5 bg-gray-900 py-2.5 text-orange-400 mt-2.5"
-            onClick={() => signIn()}
+            onClick={() => signIn("google")}
           >
             Login with
             <Icon className="ml-1" icon="flat-color-icons:google" />

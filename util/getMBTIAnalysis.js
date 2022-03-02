@@ -212,13 +212,14 @@ const mbtiCalculator = () => {
   }
 };
 
-const getMBTIAnalysis = (answers) => {
+const getMBTIAnalysis = (answers, testType) => {
   if (answers) {
     extractValues(answers);
     sortCognitiveFunctions();
     mbtiCalculator();
 
     const results = {
+      testType: testType,
       mbtiType,
       description: typeDescriptions.data[mbtiType],
       fourLetters: {
