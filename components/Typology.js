@@ -1,10 +1,16 @@
 import { Icon } from "@iconify/react";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import CognitiveFunctionChart from "./CognitiveFuncChart";
 import FourLetterChart from "./fourLetterChart";
+import { AppContext } from "./Layout";
 
 const Typology = ({ customName }) => {
+  const { typologyEntries } = useContext(AppContext);
   const [navChart, setNavChart] = useState(0);
+
+  useEffect(() => {
+    console.log(typologyEntries);
+  }, [typologyEntries]);
 
   const index = 1;
   const entries = [
@@ -14,7 +20,7 @@ const Typology = ({ customName }) => {
       connectionType: "Friend",
       time: "2/17/2022 at 3:22 PM",
       comment: "dza dzaug hahahhahha",
-      result: {
+      mbtiResult: {
         mbtiType: "INTP",
         fourLetters: {
           E: 44,
@@ -42,37 +48,41 @@ const Typology = ({ customName }) => {
 
   return (
     <>
-      {entries.map((entry, index) => (
-        <div key={index}>
+      {typologyEntries?.map((entry, index) => (
+        <div className="mb-8" key={index}>
           {/* header */}
           <div className="flex">
             {/* image */}
             <div className="uppercase bg-gray-800 text-white font-semibold rounded-full w-11 h-11 flex items-center justify-center">
-              {entry.image ? (
+              {entry?.image ? (
                 <img src={entry.image} alt="user image" />
               ) : (
-                <p>{entry.name[0]}</p>
+                <p>{entry.invited[0]}</p>
               )}
             </div>
 
             <div className="px-3 mr-auto">
-              <p className="text-xl font-semibold">{entry.result.mbtiType}</p>
+              <p className="text-xl font-semibold">
+                {entry.mbtiResult.mbtiType}
+              </p>
               <p className="text-xs text-gray-400">{entry.time}</p>
             </div>
 
             <div className="flex flex-col items-center justify-center">
-              <p className="text-sm font-semibold">{entry.name}</p>
+              <p className="text-sm font-semibold">{entry.invited}</p>
               <p className="text-xs text-gray-400 font-semibold">
-                {entry.connectionType}
+                {entry.relation}
               </p>
             </div>
           </div>
 
           {/* comment */}
-          {entry.comment && <p className="text-center py-4">{entry.comment}</p>}
+          {entry?.comment && (
+            <p className="text-center py-4">{entry.comment}</p>
+          )}
 
           {/* chart type navigation */}
-          <div className="mb-3 flex justify-center">
+          <div className="mb-3 mt-4 flex justify-center">
             <div>
               <input
                 className="hidden peer"
@@ -109,33 +119,35 @@ const Typology = ({ customName }) => {
 
           {/* charts */}
           {navChart ? (
-            <CognitiveFunctionChart values={entry.result.cognitiveFunctions} />
+            <CognitiveFunctionChart
+              values={entry.mbtiResult.cognitiveFunctions}
+            />
           ) : (
             <FourLetterChart
               values={[
                 [
                   "Extroversion",
-                  entry.result.fourLetters.E,
+                  entry.mbtiResult.fourLetters.E,
                   "Introversion",
-                  entry.result.fourLetters.I,
+                  entry.mbtiResult.fourLetters.I,
                 ],
                 [
                   "Intuition",
-                  entry.result.fourLetters.N,
+                  entry.mbtiResult.fourLetters.N,
                   "Sensing",
-                  entry.result.fourLetters.S,
+                  entry.mbtiResult.fourLetters.S,
                 ],
                 [
                   "Feeling",
-                  entry.result.fourLetters.F,
+                  entry.mbtiResult.fourLetters.F,
                   "Thinking",
-                  entry.result.fourLetters.T,
+                  entry.mbtiResult.fourLetters.T,
                 ],
                 [
                   "Judging",
-                  entry.result.fourLetters.J,
+                  entry.mbtiResult.fourLetters.J,
                   "Perceiving",
-                  entry.result.fourLetters.P,
+                  entry.mbtiResult.fourLetters.P,
                 ],
               ]}
             />

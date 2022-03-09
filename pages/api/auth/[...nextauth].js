@@ -25,8 +25,6 @@ export default NextAuth({
         useUnifiedTopology: true,
       });
 
-      console.log(token);
-
       //Get all the users
       const users = await client.db().collection("users");
 
@@ -56,8 +54,6 @@ export default NextAuth({
       token.selfTested = result.selfTested;
       token.AccordingToFriends = result.AccordingToFriends;
       token.AccumulativeResult = result.AccumulativeResult;
-
-      // console.log(token);
 
       return token;
     },

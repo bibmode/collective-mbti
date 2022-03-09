@@ -53,7 +53,7 @@ const InvitationModal = ({ setInvitation }) => {
         </div>
 
         {/* main content */}
-        <div className="relative sm:mx-8 flex-1 flex flex-col justify-start items-center sm:border-x border-gray-700">
+        <div className="relative px-4 sm:px-0 sm:mx-8 mt-24 sm:mt-0 flex-1 flex flex-col justify-start items-center sm:border-x border-gray-700">
           <h2 className="uppercase text-2xl font-semibold mt-14">
             {invitationUrl
               ? `Give this test link to ${name}`

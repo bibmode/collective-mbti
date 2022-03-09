@@ -6,84 +6,8 @@ import Header from "../Header";
 import ResultsDescriptions from "../ResultsDescriptions";
 import Typology from "../Typology";
 
-const UserMainPage = ({ session }) => {
+const UserMainPage = ({ user, self }) => {
   const [navigation, setNavigation] = useState(0);
-
-  const results = [
-    {
-      type: "Self-tested",
-      mbtiType: "INTP",
-      fourLetters: {
-        E: 44,
-        F: 31,
-        I: 56,
-        J: 31,
-        N: 72,
-        P: 69,
-        S: 28,
-        T: 69,
-      },
-      cognitiveFunctions: [
-        ["Ti", 100],
-        ["Ne", 88],
-        ["Ni", 56],
-        ["Fi", 50],
-        ["Se", 38],
-        ["Te", 38],
-        ["Si", 19],
-        ["Fe", 13],
-      ],
-    },
-    {
-      type: "According to friends",
-      mbtiType: "ENTP",
-      fourLetters: {
-        E: 44,
-        F: 31,
-        I: 56,
-        J: 31,
-        N: 72,
-        P: 69,
-        S: 28,
-        T: 69,
-      },
-      cognitiveFunctions: [
-        ["Ti", 100],
-        ["Ne", 88],
-        ["Ni", 56],
-        ["Fi", 50],
-        ["Se", 38],
-        ["Te", 38],
-        ["Si", 19],
-        ["Fe", 13],
-      ],
-    },
-    {
-      type: "Accumulative result",
-      mbtiType: "ENTP",
-
-      fourLetters: {
-        E: 44,
-        F: 31,
-        I: 56,
-        J: 31,
-        N: 72,
-        P: 69,
-        S: 28,
-        T: 69,
-      },
-      cognitiveFunctions: [
-        ["Ti", 100],
-        ["Ne", 88],
-        ["Ni", 56],
-        ["Fi", 50],
-        ["Se", 38],
-        ["Te", 38],
-        ["Si", 19],
-        ["Fe", 13],
-      ],
-    },
-  ];
 
   return (
     <div className="relative overflow-x-hidden min-h-screen">
@@ -97,12 +21,12 @@ const UserMainPage = ({ session }) => {
           <div className="py-5 flex flex-col items-center w-full lg:max-w-xs xl:max-w-[380px]">
             <img
               className="rounded-full border-2 border-orange-500 w-20 h-20"
-              src={session.user.picture}
+              src={user.image}
               alt="user display picture"
             />
 
             <h2 className="mt-6 mb-3 uppercase text-2xl font-semibold">
-              {session.user.name}
+              {user.name}
             </h2>
 
             <div className="flex justify-center border-y border-gray-500 w-full px-4 text-sm">

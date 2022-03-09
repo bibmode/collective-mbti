@@ -10,7 +10,7 @@ export default async function handler(req, res) {
 }
 
 async function updateResult(req, res) {
-  const { mbti, userEmail } = JSON.parse(req.body);
+  const { mbti, userEmail, choices } = JSON.parse(req.body);
   console.log(mbti, userEmail);
   try {
     // connect to the database
@@ -21,7 +21,7 @@ async function updateResult(req, res) {
       {
         email: userEmail,
       },
-      { $set: { selfTested: mbti } }
+      { $set: { selfTested: mbti, choicesSelfTested: choices } }
     );
 
     // return a message

@@ -31,10 +31,6 @@ const SelfQuiz = ({ questions }) => {
     setChoiceMade(newValues);
   };
 
-  // useEffect(() => {
-  //   console.log(session);
-  // }, []);
-
   // page navigations
   const goToPrevPage = () => {
     setPage(page - 1);
@@ -62,6 +58,7 @@ const SelfQuiz = ({ questions }) => {
     const newResult = {
       userEmail: session.user.email,
       mbti: calculatedData,
+      choices: choiceMade,
     };
 
     let response = await fetch("/api/selfResult", {

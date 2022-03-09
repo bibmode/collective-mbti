@@ -18,6 +18,10 @@ const About = () => {
     results,
   } = useContext(AppContext);
 
+  useEffect(() => {
+    console.log(results);
+  }, [results]);
+
   return (
     <>
       {/* bio */}

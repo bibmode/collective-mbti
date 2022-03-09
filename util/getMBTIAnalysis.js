@@ -38,7 +38,7 @@ const extractValues = (answers) => {
   };
 };
 
-const sortCognitiveFunctions = () => {
+const sortCognitiveFunctions = (length) => {
   // combine introverted and extroverted fucntions in one object
   const combinedFunctions = {
     ...extrovertedFunctions,
@@ -54,7 +54,7 @@ const sortCognitiveFunctions = () => {
 
   // replacing numbers with their percentage equivalent
   cognitiveFunctions.map((item) => {
-    item[1] = Math.round((item[1] / 16) * 100);
+    item[1] = Math.round((item[1] / (16 * length)) * 100);
   });
 };
 
@@ -214,8 +214,10 @@ const mbtiCalculator = () => {
 
 const getMBTIAnalysis = (answers, testType) => {
   if (answers) {
+    const length = answers.length / 64;
+
     extractValues(answers);
-    sortCognitiveFunctions();
+    sortCognitiveFunctions(length);
     mbtiCalculator();
 
     const results = {
@@ -223,14 +225,14 @@ const getMBTIAnalysis = (answers, testType) => {
       mbtiType,
       description: typeDescriptions.data[mbtiType],
       fourLetters: {
-        E: Math.round((letterValues.E / 64) * 100),
-        I: Math.abs(100 - Math.round((letterValues.E / 64) * 100)),
-        N: Math.round((letterValues.N / 32) * 100),
-        S: Math.abs(100 - Math.round((letterValues.N / 32) * 100)),
-        F: Math.round((letterValues.F / 32) * 100),
-        T: Math.abs(100 - Math.round((letterValues.F / 32) * 100)),
-        P: Math.round((letterValues.P / 64) * 100),
-        J: Math.round(100 - Math.round((letterValues.P / 64) * 100)),
+        E: Math.round((letterValues.E / (64 * length)) * 100),
+        I: Math.abs(100 - Math.round((letterValues.E / (64 * length)) * 100)),
+        N: Math.round((letterValues.N / (32 * length)) * 100),
+        S: Math.abs(100 - Math.round((letterValues.N / (32 * length)) * 100)),
+        F: Math.round((letterValues.F / (32 * length)) * 100),
+        T: Math.abs(100 - Math.round((letterValues.F / (32 * length)) * 100)),
+        P: Math.round((letterValues.P / (64 * length)) * 100),
+        J: Math.round(100 - Math.round((letterValues.P / (64 * length)) * 100)),
       },
       cognitiveFunctions,
     };

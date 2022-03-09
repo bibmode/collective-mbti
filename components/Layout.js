@@ -11,6 +11,7 @@ const Layout = (props) => {
   const [ruleBtnMessage, setRuleBtnMessage] = useState("start");
   const [invitation, setInvitation] = useState(false);
   const [results, setResults] = useState([0, 0, 0]);
+  const [typologyEntries, setTypologyEntries] = useState(null);
 
   const hello = "hello";
 
@@ -55,6 +56,8 @@ const Layout = (props) => {
             results,
             setResults,
             setInvitation,
+            typologyEntries,
+            setTypologyEntries,
           }}
         >
           <main className="z-20">{props.children}</main>
