@@ -13,7 +13,7 @@ const UserPage = ({ user, typology }) => {
   useEffect(() => {
     console.log(user);
     console.log(typology);
-    setTypologyEntries(typology);
+    setTypologyEntries(typology.reverse());
     setResults([
       user.selfTested,
       user.AccordingToFriends,

@@ -17,6 +17,9 @@ export default NextAuth({
     // ...add more providers here
   ],
   secret: process.env.NEXTAUTH_SECRET,
+  jwt: {
+    secret: process.env.JWT_SIGNING_PUBLIC_KEY,
+  },
   adapter: MongoDBAdapter(clientPromise),
   callbacks: {
     jwt: async ({ token, user }) => {

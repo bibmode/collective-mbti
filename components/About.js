@@ -22,6 +22,10 @@ const About = () => {
     console.log(results);
   }, [results]);
 
+  useEffect(() => {
+    console.log(navChart);
+  }, [navChart]);
+
   return (
     <>
       {/* bio */}
